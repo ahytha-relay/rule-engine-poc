@@ -1,0 +1,15 @@
+{
+  "name": "rule-engine-poc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@confluentinc/kafka-javascript": "^1.2.0",
+    "jsonata": "^2.0.6"
+  }
+}

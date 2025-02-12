@@ -29,7 +29,7 @@ const testConfig = {
       predicate: '$boolean($.event_type="powerups_data" and $.event_subtype="received" and $.form_id="foo")',
       actions: [
         { action: 'triggerMessage', transform: '{"clientId": $.client_id, "ccid": $.ccid, "triggerId": "12345"}' },
-        { action: 'updateCustomerObject', transform: '{"clientId": $.client_id, "ccid": $.ccid, "fieldName": "birthday", "fieldValue": $.answers[5].value}' }
+        { action: 'update Customer Object', transform: '{"clientId": $.client_id, "ccid": $.ccid, "fieldName": "birthday", "fieldValue": $.answers[5].value}' }
       ]
     },
     {
@@ -44,10 +44,16 @@ const testConfig = {
 // end test object definitions -------------------------------------------------
 
 
-const configSchemaCheck = jsonata('$boolean(event_type="smarttriggers" and event_subtype="configure" and $type(rules)="array")');
+const configSchemaCheck = jsonata('$boolean($.event_type="smarttriggers" and $.event_subtype="configure" and $type($.rules)="array")');
 let ruleSet = [];
 async function processEvent( event ) {
   if( await configSchemaCheck.evaluate(event) ) {
+    // validate actions
+    const actionsValid = rule.actions.all( ({action}) => Object.keys(ActionMap).includes(action));
+    if( !actionsValid ) {
+      throw new Error('Invalid action in configuration!');
+    }
+
     ruleSet = event.rules.map( (rule) => ({
       predicate: jsonata(rule.predicate).evaluate,
       actions: rule.actions.map( ({action, transform}) => ({action, transform: jsonata(transform).evaluate}))

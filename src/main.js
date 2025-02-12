@@ -1,5 +1,6 @@
 import jsonata from 'jsonata';
 import { KafkaJS } from '@confluentinc/kafka-javascript';
+import { ActionMap } from './actions.js';
 const Kafka = KafkaJS.Kafka;
 
 

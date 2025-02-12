@@ -26,14 +26,14 @@ const testConfig = {
   event_subtype: 'configure',
   rules: [
     {
-      predicate: '$boolean($.event_type="powerups_data") and $boolean($.event_subtype="received") and $boolean($.form_id="foo")',
+      predicate: '$boolean($.event_type="powerups_data" and $.event_subtype="received" and $.form_id="foo")',
       actions: [
         { action: 'triggerMessage', transform: '{"clientId": $.client_id, "ccid": $.ccid, "triggerId": "12345"}' },
         { action: 'updateCustomerObject', transform: '{"clientId": $.client_id, "ccid": $.ccid, "fieldName": "birthday", "fieldValue": $.answers[5].value}' }
       ]
     },
     {
-      predicate: '$boolean($.event_type="consent") and $boolean($.event_subtype="updated") and $boolean($.consent_type="stop")',
+      predicate: '$boolean($.event_type="consent" and $.event_subtype="updated" and $.consent_type="stop")',
       actions: [
         { action: 'dequeueMessage', transform: '{"clientId": $.client_id, "ccid": $.ccid, "triggerId": "12345}' }
       ]
@@ -44,7 +44,7 @@ const testConfig = {
 // end test object definitions -------------------------------------------------
 
 
-const configSchemaCheck = jsonata('$boolean(event_type="smarttriggers") and $boolean(event_subtype="configure") and $boolean($type(rules)="array"');
+const configSchemaCheck = jsonata('$boolean(event_type="smarttriggers" and event_subtype="configure" and $type(rules)="array")');
 let ruleSet = [];
 async function processEvent( event ) {
   if( await configSchemaCheck.evaluate(event) ) {
